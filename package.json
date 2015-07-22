@@ -1,0 +1,23 @@
+{
+  "name": "zfsgroupinfo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/binRick/zfsGroupInfo"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/binRick/zfsGroupInfo/issues"
+  },
+  "homepage": "https://github.com/binRick/zfsGroupInfo",
+  "dependencies": {
+    "chalk": "^1.1.0",
+    "prettyjson": "^1.1.2"
+  }
+}
