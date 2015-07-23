@@ -20,8 +20,7 @@ module.exports = function(Setup, CB) {
     Setup.bin = Setup.bin || 'zfs';
 	Setup.args = Setup.args || 'list -H -o name';
     var cmd = pre +' ' + 'ssh ' + Setup.server + ' ' + Setup.bin +  ' ' + Setup.args + ' | egrep "' + Setup.matches.join('|') + '"';
-    Setup.key = md5(Setup.cmd + Setup.server+ Setup.args);
-    //JSON.stringify(Setup));
+    Setup.key = md5(JSON.stringify(Setup));
     if (debug) console.log(chalk.green.bgBlack(cmd));
     Setup.cache.get(Setup.key, function(e, Filesystems) {
         if (e) throw e;
