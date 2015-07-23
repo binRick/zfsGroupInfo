@@ -20,13 +20,14 @@ module.exports = function(Setup, CB) {
     Setup.bin = Setup.bin || 'zfs';
 	Setup.args = Setup.args || 'list -H -o name';
     var cmd = pre +' ' + 'ssh ' + Setup.server + ' ' + Setup.bin +  ' ' + Setup.args + ' | egrep "' + Setup.matches.join('|') + '"';
-    Setup.key = md5(JSON.stringify(Setup));
+    Setup.key = md5(Setup.server+Setup.bin+Setup.args);
     if (debug) console.log(chalk.green.bgBlack(cmd));
     Setup.cache.get(Setup.key, function(e, Filesystems) {
         if (e) throw e;
         Filesystems = _.toArray(Filesystems);
         if (!Filesystems || Filesystems.length < 1) {
             child.execSync = child.execSync || require('exec-sync');
+	    console.log(chalk.red.bgWhite('Cache miss'));
             Filesystems = child.execSync(cmd).toString();
 	if(Filesystems.split('\n').length==0)
 		Filesystems=[Filesystems];
@@ -36,8 +37,11 @@ module.exports = function(Setup, CB) {
             });
             Setup.cache.set(Setup.key, Filesystems, Setup.ttl, function(e) {
                 if (e) throw e;
+	console.log(Filesystems, Setup.key,' CACHE SET');
             });
-        }
+        }else{
+	    console.log(chalk.green.bgWhite('Cache hit!'));
+	}
         if (Setup.field)
             Filesystems = Filesystems.map(function(fs) {
                 return fs.split(Setup.delimiter)[Setup.field];
